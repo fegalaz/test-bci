@@ -3,10 +3,12 @@ package test.bci.com.controllers;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import test.bci.com.dto.UserDTO;
 import test.bci.com.exceptions.UserAlreadyExistsException;
 import test.bci.com.repositories.entities.Users;
 import test.bci.com.services.UserService;
@@ -24,15 +26,19 @@ import java.util.Map;
 @Slf4j
 public class UserController {
 
+    @Autowired
     private final UserService userService;
+
+    @Autowired
     private final EmailValidator emailValidator;
 
     /**
-     * Metodo que retorna la lista
-     * de usuarios creados
+     * Metodo que retorna la
+     * @return Lista de Usuarios
      */
     @GetMapping("/list")
-    public List<Users> findAll(){
+    public List<UserDTO> findAll(){
+
         return  userService.findAll();
     }
 

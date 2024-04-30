@@ -1,10 +1,13 @@
 package test.bci.com.services.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import test.bci.com.dto.UserDTO;
 import test.bci.com.exceptions.UserAlreadyExistsException;
+import test.bci.com.mapper.UserMapper;
 import test.bci.com.repositories.UserRepository;
 import test.bci.com.repositories.entities.Users;
 import test.bci.com.services.UserService;
@@ -13,6 +16,7 @@ import test.bci.com.utils.PasswordValidator;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -26,6 +30,9 @@ public class UserServiceImpl  implements UserService {
 
     @Autowired
     private PasswordValidator passwordValidator;
+
+    @Autowired
+    private UserMapper mapper;
 
 
     /**
@@ -57,7 +64,9 @@ public class UserServiceImpl  implements UserService {
      * @return List<Users>
      */
     @Override
-    public List<Users> findAll() {
-        return userRepository.findAll();
+    public List<UserDTO> findAll() {
+
+        List<Users> responds = userRepository.findAll();
+        return responds.stream().map(mapper::entityToUserDto).collect(Collectors.toList());
     }
 }
